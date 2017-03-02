@@ -1,0 +1,43 @@
+.horul{
+  float:left;
+  font-size:1.5em;
+  line-height:2em;
+}
+.horul li{
+  display:inline-block;
+  list-style:none;
+  height:25px;
+  width:3em;
+  text-align:center;
+}
+.horul li a{
+ color: #0f0f0f;
+}
+.menu{
+  width:1024px;
+  background-color:#005f3d;
+  height:1.5em;
+  margin:0 auto;
+  font-size:1.5em;
+  /*display:;*/
+  text-align:center;
+}
+.menu span{
+  float:left;
+  display:inline-block;
+  color:#ffffff;
+  margin-left:1em;
+}
+.answer tr td div{
+  width:45px;
+  height:45px;
+  background-color:green;
+  color:#ffffff;
+  text-align:center;
+}
+a,a:hover,a:visited{
+  color:#ffffff;
+}
+.pagecounts a{
+  color: #0f0f0f;
+}

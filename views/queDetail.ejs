@@ -1,0 +1,99 @@
+<% include header.ejs %>
+<script src="/javascripts/jQuery1.3.2.min.js"></script>
+<script type="text/javascript" src="/textarea/xheditor-1.2.2.min.js"></script>
+<script type="text/javascript" src="/textarea/xheditor_lang/zh-cn.js"></script>
+<script type="text/javascript">
+    $(pageInit);
+    function pageInit() {
+        $.extend(XHEDITOR.settings, {shortcuts: {'ctrl+enter': submitForm}});
+        $('#content').xheditor({
+            html5Upload: false,
+            upMultiple: '1',
+            upLinkUrl: "/uploadFile",
+            upLinkExt: "zip,rar,txt",
+            upImgUrl: "/uploadImg",
+            upImgExt: "jpg,jpeg,gif,png",
+            upFlashUrl: "/uploadFlash",
+            upFlashExt: "swf",
+            upMediaUrl: "/uploadMedia",
+            upMediaExt: "wmv,avi,wma,mp3,mid"
+        });
+//    $('#content').xheditor({tools:'full',skin:'default',showBlocktag:true,internalScript:false,internalStyle:false,width:300,height:200,fullscreen:false,sourceMode:false,forcePtag:true,upImgUrl:"/uploadImg",upImgExt:"jpg,jpeg,gif,png"});
+    }
+    function insertUpload(arrMsg) {
+        console.log(arrMsg)
+        var i, msg;
+        for (i = 0; i < arrMsg.length; i++) {
+            msg = arrMsg[i];
+            $("#uploadList").append('<option value="' + msg.id + '">' + msg.localname + '</option>');
+        }
+    }
+    function submitForm() {
+        $('#frmDemo').submit();
+    }
+    $(function () {
+        replyForm.targeturl.value = location.href;
+    });
+</script>
+<table align='center' border="1">
+    <tr>
+        <td>提问者：<%= rs[0].nicheng %></td>
+    </tr>
+    <tr>
+        <td>类别：<%= rs[0].typename %></td>
+    </tr>
+    <tr>
+        <td>问题题目：<%= rs[0].title %></td>
+    </tr>
+    <tr>
+        <td>内容：<%- rs[0].content %></td>
+    </tr>
+    <tr>
+        <td><%= rs[0].renum %>个人回答了该问题</td>
+    </tr>
+</table>
+<hr>
+<% if(rsReply != undefined){
+rsReply.forEach(function (name) {%>
+<% if(name.qid == rs[0].qid){ %>
+
+<table align="center" border="1">
+    <tr>
+        <td>昵称：<%= name.nicheng %></td>
+        <td>第<%= name.rpid %>条回复&nbsp;：</td>
+
+
+    </tr>
+    <tr>
+        <td>回复内容：<%= name.content %></td>
+        <td>回复时间：<%= name.createtime %></td>
+    </tr>
+</table>
+<% } %>
+<%
+});
+} %>
+
+
+<table align="center">
+    <tr>
+        <td align="center">
+            <form action="/question/reply" method="post" name="replyForm">
+                <% if(loginbean == undefined){ %>
+                <span class="pagecounts">回复请先<a
+                            href="javascript:document.getElementById('login').click();">登录</a></span>
+                <% }else{ %>
+                <textarea id="content" name="content" cols="120" rows="9"></textarea>
+                <br>
+                <input type="hidden" name="qid" value="<%= rs[0].qid %>">
+                <input type="hidden" name="subflag" value="1">
+                <input type="hidden" name="targeturl" value="/">
+                <input type="submit" value="回答">
+                <% } %>
+            </form>
+        </td>
+    </tr>
+</table>
+<% include loginModal %>
+</body>
+</html>
